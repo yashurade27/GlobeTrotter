@@ -1,4 +1,5 @@
-// prisma/schema.prisma
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
@@ -9,10 +10,78 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// User model
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
+  id            String    @id @default(uuid())
+  name          String?
+  email         String    @unique
+  password      String
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  trips         Trip[]
+}
+
+// Trip model
+model Trip {
+  id            String    @id @default(uuid())
+  title         String
+  description   String?
+  startDate     DateTime
+  endDate       DateTime
+  budget        Float?
+  imageUrl      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  destinations  Destination[]
+  itineraries   Itinerary[]
+
+  @@index([userId])
+}
+
+// Destination model
+model Destination {
+  id            String    @id @default(uuid())
+  name          String
+  country       String
+  description   String?
+  imageUrl      String?
+  tripId        String
+  trip          Trip      @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  itineraries   Itinerary[]
+
+  @@index([tripId])
+}
+
+// Itinerary model (daily plans)
+model Itinerary {
+  id            String    @id @default(uuid())
+  day           Int
+  date          DateTime
+  notes         String?
+  tripId        String
+  trip          Trip      @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  destinationId String?
+  destination   Destination? @relation(fields: [destinationId], references: [id])
+  activities    Activity[]
+
+  @@index([tripId])
+  @@index([destinationId])
+}
+
+// Activity model (things to do within an itinerary)
+model Activity {
+  id            String    @id @default(uuid())
+  title         String
+  description   String?
+  startTime     DateTime?
+  endTime       DateTime?
+  location      String?
+  cost          Float?
+  itineraryId   String
+  itinerary     Itinerary @relation(fields: [itineraryId], references: [id], onDelete: Cascade)
+
+  @@index([itineraryId])
 }
