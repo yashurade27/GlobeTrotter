@@ -1,103 +1,85 @@
-import Image from "next/image";
+"use client";
+import ImageCarousel from "@/components/Hero/ImageCarousel";
+import SearchAndSort from "@/components/Hero/SearchAndSort";
+import TopRegionalCard from "@/components/Hero/TopRegionalCard";
+
+export const topRegionalCardsData = [
+  {
+    title: "Europe",
+    description: "Explore the rich history and culture of Europe.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    actionUrl: "/explore/europe",
+  },
+  {
+    title: "Asia",
+    description: "Discover the vibrant traditions and landscapes of Asia.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    actionUrl: "/explore/asia",
+  },
+  {
+    title: "South America",
+    description:
+      "Experience the diverse cultures and natural wonders of South America.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1494526585095-c41746248156?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    actionUrl: "/explore/south-america",
+  },
+  {
+    title: "Africa",
+    description:
+      "Journey through the diverse landscapes and cultures of Africa.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1500534623283-312aade485b7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    actionUrl: "/explore/africa",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="flex flex-col w-full items-center justify-start min-h-screen py-8 space-y-12">
+      {/* Hero Carousel Section */}
+      <div className="w-full flex items-center justify-center">
+        <ImageCarousel />
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Search and Sort Section */}
+      <div className="w-full max-w-6xl px-4">
+        <SearchAndSort />
+      </div>
+
+      {/* Top Regional Selections */}
+      <section className="w-full max-w-7xl px-4">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold mb-3">Top Regional Destinations</h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Discover amazing destinations across different continents and
+            cultures
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <TopRegionalCard items={topRegionalCardsData} />
+      </section>
+
+      {/* Previous Trips Section */}
+      <section className="w-full max-w-7xl px-4">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 border border-blue-100 dark:border-gray-700 rounded-2xl p-8 text-center">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+            Your Travel Journey
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-6">
+            View your previous trips and plan your next adventure
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button className="bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-black px-6 py-3 rounded-lg font-medium transition-colors duration-200">
+              View Previous Trips
+            </button>
+            <button className="bg-white hover:bg-gray-50 dark:bg-black dark:hover:bg-gray-800 text-black dark:text-white border border-black dark:border-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
+              Plan New Trip
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

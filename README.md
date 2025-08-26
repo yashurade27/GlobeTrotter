@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Globetrotter - Travel Trip Planner
+
+Globetrotter is a comprehensive travel planning application built with Next.js, Prisma ORM, and PostgreSQL. Plan your trips, manage destinations, create detailed itineraries, and track activities all in one place.
+
+## Features
+
+- **User Authentication**: Secure signup, login, and profile management
+- **Trip Management**: Create and manage trips with dates, budget, and images
+- **Destination Planning**: Add multiple destinations to your trips
+- **Itinerary Builder**: Create detailed day-by-day itineraries
+- **Activity Tracking**: Plan activities with times, locations, and costs
+- **Responsive Design**: Beautiful UI that works on desktop and mobile
+
+## Tech Stack
+
+- **Frontend**: Next.js 14 with App Router, React, TypeScript, Tailwind CSS
+- **UI Components**: Shadcn/UI
+- **Database**: PostgreSQL with Prisma ORM
+- **Authentication**: JWT-based authentication
+- **Backend**: Next.js Server Actions and API Routes
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ and npm
+- PostgreSQL database (We recommend using Neon DB for easy setup)
+
+### Installation
+
+1. Install dependencies
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Set up environment variables
+```bash
+cp .env.example .env
+```
+Edit the `.env` file with your database connection string and other required values.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Generate Prisma client and run migrations
+```bash
+npx prisma generate
+npx prisma migrate dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Start the development server
+```bash
+npm run dev
+```
 
-## Learn More
+The application will be available at http://localhost:3000
 
-To learn more about Next.js, take a look at the following resources:
+## Database Setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project uses Prisma ORM with PostgreSQL. Follow these steps to set up your database:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Create a PostgreSQL database (can be local or using Neon DB)
+2. Update your DATABASE_URL in the .env file
+3. Run the initial migration:
+```bash
+npx prisma migrate dev --name init
+```
 
-## Deploy on Vercel
+## Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+globetrotter/
+├── app/                 # Next.js App Router pages
+│   ├── api/             # API routes
+│   ├── login/           # Authentication pages
+│   ├── register/        # User registration
+│   ├── create-trip/     # Trip creation pages
+│   └── trips/           # Trip management pages
+├── components/          # React components
+│   ├── ui/              # UI components (shadcn/ui)
+│   └── ...              # Feature-specific components
+├── lib/                 # Utility functions and business logic
+│   ├── actions/         # Server actions
+│   └── db.ts            # Prisma client initialization
+├── prisma/              # Prisma schema and migrations
+│   └── schema.prisma    # Database schema
+├── public/              # Static assets
+└── middleware.ts        # Next.js middleware for auth protection
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Authentication Flow
+
+The app uses JWT-based authentication with secure HTTP-only cookies:
+
+1. User signs up or logs in
+2. Server creates a JWT token and sets it in an HTTP-only cookie
+3. Middleware checks for the token on protected routes
+4. Server actions validate the token before performing operations
+
+## Deployment
+
+For production deployment, we recommend using Vercel for the application and Neon DB for the PostgreSQL database:
+
+1. Create a Neon PostgreSQL database
+2. Push your code to GitHub
+3. Connect your repository to Vercel
+4. Set up the environment variables in Vercel
+5. Deploy!
