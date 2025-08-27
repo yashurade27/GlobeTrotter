@@ -100,7 +100,11 @@ export async function signupUser(prevState: any, formData: FormData) {
 
   // create user in DB
   const user = await prisma.user.create({
-    data: { name, email, password: hashedPassword },
+    data: {
+      name,
+      email,
+      password: hashedPassword,
+    },
   });
 
   // delete OTP after signup
@@ -175,7 +179,6 @@ export async function getCurrentUser(sessionId?: string) {
         id: true,
         name: true,
         email: true,
-        image: true,
         createdAt: true,
       },
     });
