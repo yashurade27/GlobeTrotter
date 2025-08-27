@@ -34,15 +34,18 @@ export default function LoginPage() {
       
       // Set the session in both cookie and localStorage for redundancy
       if (result.sessionId) {
+        console.log('Setting session:', result.sessionId);
+        
         // Set in cookie for standard web usage
         document.cookie = `sessionId=${result.sessionId}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Strict`;
         
         // Also store in localStorage as fallback
         localStorage.setItem('sessionId', result.sessionId);
+        
+        // Force a page refresh to update the session state
+        window.location.href = callbackUrl;
+        return;
       }
-      
-      router.push(callbackUrl);
-      router.refresh();
     } catch (err) {
       console.error('Login error:', err);
       setError('An unexpected error occurred. Please try again.');

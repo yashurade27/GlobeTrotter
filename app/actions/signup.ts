@@ -43,7 +43,7 @@ export async function sendOtp(prevState: any, formData: FormData) {
     const OTP_EXPIRY = 60 * 5; // 5 minutes
     
     // Store OTP in Redis with expiration
-    await redis.set(`signup:otp:${email}`, otp, 'EX', OTP_EXPIRY);
+    await redis.setex(`signup:otp:${email}`, OTP_EXPIRY, otp);
     
     // Send OTP email
     await sendMail({
@@ -91,7 +91,7 @@ export async function verifyOtp(prevState: any, formData: FormData) {
     }
     
     // Store verification status in Redis for 10 minutes
-    await redis.set(`signup:verified:${email}`, "true", 'EX', 60 * 10);
+    await redis.setex(`signup:verified:${email}`, 60 * 10, "true");
     
     return { success: true, message: "OTP verified successfully" };
   } catch (error) {

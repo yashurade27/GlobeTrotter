@@ -1,32 +1,14 @@
 import nodemailer from "nodemailer";
 
-// Create a transport with improved settings
+// Create a transport with Gmail settings from environment variables
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
+  port: parseInt(process.env.SMTP_PORT || "587"),
   secure: false, // true for 465, false for other ports
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
-  // Add these settings for Gmail specifically
-  tls: {
-    rejectUnauthorized: false, // Allows connecting to servers with self-signed certificates
-    ciphers: 'SSLv3', // Use stronger ciphers
-  },
-  // Add timeout settings
-  connectionTimeout: 10000, // 10 seconds
-  greetingTimeout: 10000,
-  socketTimeout: 10000,
-});
-
-// Verify the connection before using it
-transporter.verify(function (error, success) {
-  if (error) {
-    console.error("SMTP connection error:", error);
-  } else {
-    console.log("SMTP server is ready to take our messages");
-  }
 });
 
 export async function sendMail({ 
@@ -48,10 +30,11 @@ export async function sendMail({
       text,
       html,
     });
-    console.log("Email sent successfully:", result.messageId);
+    
+    console.log(`✅ Email sent successfully to: ${to}`);
     return { success: true, messageId: result.messageId };
   } catch (error) {
-    console.error("Failed to send email:", error);
+    console.error("❌ Failed to send email:", error);
     return { success: false, error };
   }
 }

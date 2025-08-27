@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
-import { AppSidebar } from "@/components/AppSidebar";
 import Navbar from "@/components/Navbar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { cookies } from "next/headers";
 import { Toaster } from "@/components/ui/toaster";
+import SessionProvider from "@/components/SessionProvider";
+import SidebarWrapper from "@/components/SidebarWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,14 +39,16 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <SidebarProvider defaultOpen={defaultOpen}>
-            <AppSidebar />
-            <main className="w-full">
-              <Navbar />
-              <div className="px-4">{children}</div>
-            </main>
-            <Toaster />
-          </SidebarProvider>
+          <SessionProvider>
+            <SidebarProvider defaultOpen={defaultOpen}>
+              <SidebarWrapper />
+              <main className="w-full">
+                <Navbar />
+                <div className="px-4">{children}</div>
+              </main>
+              <Toaster />
+            </SidebarProvider>
+          </SessionProvider>
         </ThemeProvider>
       </body>
     </html>

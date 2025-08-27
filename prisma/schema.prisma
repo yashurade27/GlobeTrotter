@@ -10,6 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 // User model
 model User {
   id            String    @id @default(uuid())
@@ -17,10 +22,14 @@ model User {
   email         String    @unique
   password      String
   image         String?
+  role          Role      @default(USER)
+  isBanned      Boolean   @default(false)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   trips         Trip[]
 }
+
+
 
 // Trip model
 model Trip {
