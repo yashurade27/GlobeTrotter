@@ -15,7 +15,7 @@ enum Role {
   ADMIN
 }
 
-// User model
+
 model User {
   id            String    @id @default(uuid())
   name          String?
@@ -33,7 +33,7 @@ model User {
 
 // Trip model
 model Trip {
-  id            String    @id @default(uuid())
+  id            String    @id @default(uuid()) //Client Side Display, 
   title         String
   description   String?
   startDate     DateTime
@@ -50,9 +50,8 @@ model Trip {
   @@index([userId])
 }
 
-// Destination model
 model Destination {
-  id            String    @id @default(uuid())
+  id            String    @id @default(uuid())  
   name          String
   country       String
   description   String?

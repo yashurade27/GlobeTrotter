@@ -40,7 +40,7 @@ export async function signIn(email: string, password: string) {
     
     // Store session in Redis (7 days expiry)
     await redis.setex(`session:${sessionId}`, 60 * 60 * 24 * 7, user.id);
-    await redis.setex(`session:${sessionId}:role`, 60 * 60 * 24 * 7, user.role);
+    //await redis.setex(`session:${sessionId}:role`, 60 * 60 * 24 * 7, user.role);
 
     return { 
       success: true, 
@@ -66,7 +66,6 @@ export async function getCurrentUser(sessionId?: string) {
     if (!sessionId) {
       return null;
     }
-    
     // Get user ID from Redis session
     const userId = await redis.get(`session:${sessionId}`);
     
@@ -103,7 +102,7 @@ export async function signOut(sessionId?: string) {
   try {
     // Clear the session from Redis
     await redis.del(`session:${sessionId}`);
-    await redis.del(`session:${sessionId}:role`);
+//    await redis.del(`session:${sessionId}:role`);
     
     return { success: true, message: 'Successfully signed out' };
   } catch (error) {

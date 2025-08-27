@@ -81,9 +81,7 @@ export async function getUserTrips(sessionId?: string) {
   }
 }
 
-/**
- * Get a trip by ID
- */
+
 export async function getTrip(tripId: string, sessionId?: string) {
   try {
     const user = await getCurrentUser(sessionId);

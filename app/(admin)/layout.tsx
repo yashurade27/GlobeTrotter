@@ -18,7 +18,7 @@ export default async function AdminLayout({
   
   // Verify user is logged in and has admin privileges
   if (!sessionId) {
-    redirect('/login?callbackUrl=/dashboard');
+    redirect('/login');
   }
   
   // Get current user and verify admin role

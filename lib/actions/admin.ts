@@ -205,12 +205,12 @@ export async function deleteUser(sessionId: string, userId: string) {
 }
 
 
-export default async function changeRole(sessionId: string) {
+export default async function changeRole(sessionId: string, userSessionId: string) {
     try {
         if(!await isAdmin(sessionId)){
             return { error: "Unauthorized. Admin access required." };
         }
-        const user = await getCurrentUser(sessionId);
+        const user = await getCurrentUser(userSessionId);
         if(!user){
             return { error: "User not found." };
         }
