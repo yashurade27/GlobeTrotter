@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { getCurrentUser } from '@/lib/actions/auth';
+import { getCurrentUserEdge } from '@/lib/actions/auth-edge';
 
 // Paths requiring authentication
 const protectedPaths = ['/trips', '/create-trip', '/profile'];
@@ -41,14 +41,19 @@ export async function middleware(request: NextRequest) {
   // Get the active session ID (from cookie or bearer token)
   const activeSessionId = sessionId || bearerToken;
 
-  // Validate session with Redis if we have a session ID
+  // Validate session with Edge-compatible Redis
   let user = null;
   if (activeSessionId) {
     try {
-      user = await getCurrentUser(activeSessionId);
+      user = await getCurrentUserEdge(activeSessionId);
+      
+      // If session exists but user is null (banned, deleted, etc.), clear the session
+      if (!user && activeSessionId) {
+        response.cookies.delete('sessionId');
+      }
     } catch (error) {
-      console.error('Session validation error:', error);
-      // Clear invalid session cookie
+      console.error('Middleware session validation error:', error);
+      // Clear invalid session cookie on error
       response.cookies.delete('sessionId');
     }
   }
@@ -66,7 +71,9 @@ export async function middleware(request: NextRequest) {
 
   // Redirect unauthenticated users away from protected routes
   if (requiresAuth && !isAuthenticated) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    const loginUrl = new URL('/login', request.url);
+    loginUrl.searchParams.set('redirectTo', pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
   // Redirect authenticated users away from auth-only routes
@@ -76,7 +83,20 @@ export async function middleware(request: NextRequest) {
 
   // Redirect non-admin users away from admin routes
   if (requiresAdmin && (!isAuthenticated || !user || user.role !== 'ADMIN')) {
-    return NextResponse.redirect(new URL('/unauthorized', request.url));
+    if (!isAuthenticated) {
+      const loginUrl = new URL('/login', request.url);
+      loginUrl.searchParams.set('redirectTo', pathname);
+      return NextResponse.redirect(loginUrl);
+    } else {
+      return NextResponse.redirect(new URL('/unauthorized', request.url));
+    }
+  }
+
+  // Add user information to headers for server components (optional)
+  if (user) {
+    response.headers.set('x-user-id', user.id);
+    response.headers.set('x-user-role', user.role);
+    response.headers.set('x-user-authenticated', 'true');
   }
 
   return response;
@@ -87,7 +107,6 @@ export const config = {
     '/dashboard/:path*',
     '/admin/:path*',
     '/api/admin/:path*',
-    '/api/:path*',
     '/trips/:path*',
     '/create-trip',
     '/profile',

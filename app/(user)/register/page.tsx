@@ -34,7 +34,7 @@ export default function RegisterPage() {
       setError("Email is required");
       return false;
     }
-    if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    if (!/\S+@\S+\.\S+/.test(formData.email)) { 
       setError("Please enter a valid email address");
       return false;
     }

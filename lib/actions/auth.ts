@@ -1,7 +1,6 @@
 "use server";
 
 import { PrismaClient } from "@prisma/client";
-import { sendMail } from "@/lib/mail";
 import bcrypt from "bcryptjs";
 import { redis } from '@/lib/redis';
 
@@ -63,13 +62,15 @@ export async function signIn(email: string, password: string) {
 export async function getCurrentUser(sessionId?: string) {
   try {
     // If sessionId is not passed, we can't get the user
-    if (!sessionId) {
+    if (!sessionId || typeof sessionId !== 'string' || sessionId.trim() === '') {
+      console.log('getCurrentUser: No valid sessionId provided');
       return null;
     }
     // Get user ID from Redis session
     const userId = await redis.get(`session:${sessionId}`);
     
-    if (!userId) {
+     if (!userId || typeof userId !== 'string') {
+      console.log('getCurrentUser: No valid userId found in Redis');
       return null;
     }
     
